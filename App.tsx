@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,17 +18,24 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+import ProfileList from './src/components/ProfileList';
 
 declare const global: {HermesInternal: null | {}};
 
+const initialProfiles = [
+  {
+    id: 0,
+    username: 'Herman',
+  },
+  {
+    id: 3,
+    username: 'Olivia',
+  },
+];
+
 const App = () => {
+  const [profiles, setProfiles] = useState(initialProfiles);
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -51,24 +58,9 @@ const App = () => {
               </Text>
             </View>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
+              <Text style={styles.sectionTitle}>This is mine</Text>
+              <ProfileList profiles={profiles} setProfiles={setProfiles} />
             </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
           </View>
         </ScrollView>
       </SafeAreaView>
