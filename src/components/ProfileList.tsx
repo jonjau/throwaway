@@ -1,12 +1,24 @@
 import React, {useState} from 'react';
-import {Button, FlatList, Text, View} from 'react-native';
-import {Profile} from '../models/Profile';
+import {View} from 'react-native';
+import {Button, Text, ListItem, Right, Body} from 'native-base';
+import Profile from '../models/Profile';
 
-const ProfileItem = ({username}: any) => (
-  <View>
-    <Text>{username}</Text>
-  </View>
-);
+const ProfileItem = (profile: Profile) => {
+  const {username, id} = profile;
+  return (
+    <View>
+      <ListItem onPress={() => console.log('liop')}>
+        <Body>
+          <Text>{username}</Text>
+          <Text note>{username}</Text>
+        </Body>
+        <Right>
+          <Text note>{id}</Text>
+        </Right>
+      </ListItem>
+    </View>
+  );
+};
 
 interface Props {
   profiles: Profile[];
@@ -16,21 +28,22 @@ interface Props {
 const ProfileList = ({profiles, setProfiles}: Props) => {
   const [counter, setCounter] = useState(0);
 
-  const renderItem = ({item: profile}: {item: Profile}) => (
-    <ProfileItem username={profile.username} />
-  );
-
   return (
     <View>
       <Text>Hello World</Text>
-      <FlatList
-        data={profiles}
-        renderItem={renderItem}
-        keyExtractor={(profile) => profile.id.toString()}
-      />
-      <Button title="Add profile" onPress={() => setProfiles([])} />
+      {profiles.map((profile, index) => (
+        <ProfileItem {...profile} key={index} />
+      ))}
+      <Button
+        onPress={() =>
+          setProfiles([...profiles, {username: 'Sherman', id: 9}])
+        }>
+        <Text>profiles</Text>
+      </Button>
       <Text>{counter}</Text>
-      <Button title="increment" onPress={() => setCounter(counter + 1)} />
+      <Button onPress={() => setCounter(counter + 1)}>
+        <Text>counter</Text>
+      </Button>
     </View>
   );
 };

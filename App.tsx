@@ -14,12 +14,28 @@ import {
   StyleSheet,
   ScrollView,
   View,
-  Text,
   StatusBar,
 } from 'react-native';
+import {
+  Root,
+  Body,
+  Container,
+  Header,
+  Right,
+  Title,
+  Button,
+  Text,
+} from 'native-base';
+import {
+  createStackNavigator,
+  StackNavigationProp,
+} from '@react-navigation/stack';
 
-import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ProfileList from './src/components/ProfileList';
+import {NavigationContainer} from '@react-navigation/native';
+
+import HomeScreen from './src/screens/Home';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -34,37 +50,57 @@ const initialProfiles = [
   },
 ];
 
+function DetailsScreen() {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Details Screen</Text>
+    </View>
+  );
+}
+
+const Stack = createStackNavigator();
+export type StackParamList = {
+  Home: undefined;
+  Details: undefined;
+};
+
 const App = () => {
   const [profiles, setProfiles] = useState(initialProfiles);
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.tsx</Text> to change
-                this screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>This is mine</Text>
-              <ProfileList profiles={profiles} setProfiles={setProfiles} />
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+      </Stack.Navigator>
+      {/* <Root>
+        <Container>
+          <Header>
+            <StatusBar barStyle="light-content" />
+            <Body>
+              <Title>Throwaway Account Manager</Title>
+            </Body>
+            <Right />
+          </Header>
+          <SafeAreaView>
+            <ScrollView
+              contentInsetAdjustmentBehavior="automatic"
+              style={styles.scrollView}>
+              {global.HermesInternal == null ? null : (
+                <View style={styles.engine}>
+                  <Text style={styles.footer}>Engine: Hermes</Text>
+                </View>
+              )}
+              <View style={styles.body}>
+                <View style={styles.sectionContainer}>
+                  <Text style={styles.sectionTitle}>Accounts</Text>
+                  <ProfileList profiles={profiles} setProfiles={setProfiles} />
+                </View>
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </Container>
+      </Root> */}
+    </NavigationContainer>
   );
 };
 
