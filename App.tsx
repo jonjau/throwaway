@@ -32,10 +32,13 @@ import {
 } from '@react-navigation/stack';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import ProfileList from './src/components/ProfileList';
+import ProfileList from './src/screens/ProfileList';
 import {NavigationContainer} from '@react-navigation/native';
 
 import HomeScreen from './src/screens/Home';
+import Profile from './src/models/Profile';
+import ProfileEditScreen from './src/screens/ProfileEdit';
+import ProfileService from './src/services/ProfileService';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -62,17 +65,35 @@ const Stack = createStackNavigator();
 export type StackParamList = {
   Home: undefined;
   Details: undefined;
+  ProfileEdit: {
+    profile: Profile;
+  };
 };
 
+export interface HomeContextType {
+  profiles: Profile[];
+  setProfiles: React.Dispatch<React.SetStateAction<Profile[]>>;
+}
+export const HomeContext = React.createContext<HomeContextType | null>(null);
+
+// export interface ProfileEditContextType {
+//   profile: Profile;
+//   setProfile:
+// }
+
 const App = () => {
-  const [profiles, setProfiles] = useState(initialProfiles);
+  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
-      {/* <Root>
+    <HomeContext.Provider value={{profiles, setProfiles}}>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Details" component={DetailsScreen} />
+          <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </HomeContext.Provider>
+    /* <Root>
         <Container>
           <Header>
             <StatusBar barStyle="light-content" />
@@ -99,8 +120,7 @@ const App = () => {
             </ScrollView>
           </SafeAreaView>
         </Container>
-      </Root> */}
-    </NavigationContainer>
+      </Root> */
   );
 };
 

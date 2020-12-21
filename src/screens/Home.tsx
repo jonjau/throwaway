@@ -1,22 +1,47 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Button, Text, View} from 'native-base';
-import {StackParamList} from '../../App';
+import {Button, Container, Text} from 'native-base';
+import {StackParamList, HomeContext, HomeContextType} from '../../App';
+import ProfileList from './ProfileList';
+import ProfileService from '../services/ProfileService';
 
-type HomeScreenNavigationProp = StackNavigationProp<StackParamList, 'Home'>;
+export type HomeScreenNavigationProp = StackNavigationProp<
+  StackParamList,
+  'Home'
+>;
 type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
 const HomeScreen = ({navigation}: Props) => {
+  const context = useContext(HomeContext) as HomeContextType;
+  const {profiles, setProfiles} = context;
+
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const data = await ProfileService.getAllProfiles();
+      setProfiles(data);
+    };
+    fetchProfiles();
+  });
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
+    <Container>
+      {/* <Text>Home Screen</Text>
       <Button onPress={() => navigation.navigate('Details')}>
         <Text>Go to Details</Text>
       </Button>
-    </View>
+      <Button
+        onPress={() => navigation.navigate('ProfileEdit', {profile: hodl})}>
+        <Text>Go to ProfileEdit</Text>
+      </Button> */}
+      <ProfileList
+        profiles={profiles}
+        setProfiles={setProfiles}
+        navigation={navigation}
+      />
+      {/* <ProfileEdit profile={{username: 'holstein', id: 70}} /> */}
+    </Container>
   );
-}
+};
 
 export default HomeScreen;
