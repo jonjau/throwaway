@@ -42,17 +42,6 @@ import ProfileService from './src/services/ProfileService';
 
 declare const global: {HermesInternal: null | {}};
 
-const initialProfiles = [
-  {
-    id: 0,
-    username: 'Herman',
-  },
-  {
-    id: 3,
-    username: 'Olivia',
-  },
-];
-
 function DetailsScreen() {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -76,13 +65,8 @@ export interface HomeContextType {
 }
 export const HomeContext = React.createContext<HomeContextType | null>(null);
 
-// export interface ProfileEditContextType {
-//   profile: Profile;
-//   setProfile:
-// }
-
 const App = () => {
-  const [profiles, setProfiles] = useState<Profile[]>(initialProfiles);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   return (
     <HomeContext.Provider value={{profiles, setProfiles}}>
       <NavigationContainer>

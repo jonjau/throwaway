@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {Button, Text, ListItem, Right, Body} from 'native-base';
 import Profile from '../models/Profile';
 import {HomeScreenNavigationProp} from './Home';
 import ProfileService from '../services/ProfileService';
-import { LearnMoreLinks } from 'react-native/Libraries/NewAppScreen';
 
 interface ProfileItemProps {
   navigation: HomeScreenNavigationProp;
@@ -12,13 +11,13 @@ interface ProfileItemProps {
 }
 
 const ProfileItem = ({navigation, profile}: ProfileItemProps) => {
-  const {username, id} = profile;
+  const {username, description, id} = profile;
   return (
     <View>
       <ListItem onPress={() => navigation.navigate('ProfileEdit', {profile})}>
         <Body>
           <Text>{username}</Text>
-          <Text note>{username}</Text>
+          <Text note>{description}</Text>
         </Body>
         <Right>
           <Text note>ID: {id}</Text>
@@ -36,7 +35,16 @@ interface Props {
 
 const ProfileList = ({navigation, profiles, setProfiles}: Props) => {
   const addProfile = () => {
-    ProfileService.addProfile({username: '', id: profiles.length + 1});
+    const lastProfile = profiles[profiles.length - 1];
+    const lastProfileId = lastProfile ? lastProfile.id : 0;
+    ProfileService.addProfile({
+      id: lastProfileId + 1,
+      username: 'Joe',
+      sex: 'Male',
+      email: '',
+      phoneNumber: '',
+      description: '',
+    });
   };
 
   const deleteAllProfiles = () => {
@@ -49,7 +57,6 @@ const ProfileList = ({navigation, profiles, setProfiles}: Props) => {
 
   return (
     <View>
-      <Text>Hello World</Text>
       <Button
         onPress={() => {
           // setProfiles([...profiles, {username: 'Sherman', id: 9}]);

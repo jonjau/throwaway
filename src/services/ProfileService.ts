@@ -15,9 +15,18 @@ class ProfileService {
     return AsyncStorage.multiRemove(allKeys);
   }
 
+  // also functions as updateProfile
   async addProfile(profile: Profile) {
     const json = JSON.stringify(profile);
     return await AsyncStorage.setItem(profile.id.toString(), json);
+  }
+
+  async deleteProfile(id: number) {
+    return await AsyncStorage.removeItem(id.toString());
+  }
+
+  async getProfileById(id: number) {
+    return await AsyncStorage.getItem(id.toString());
   }
 }
 

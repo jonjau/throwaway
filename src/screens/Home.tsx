@@ -39,7 +39,6 @@ const HomeScreen = ({navigation}: Props) => {
         setProfiles={setProfiles}
         navigation={navigation}
       />
-      {/* <ProfileEdit profile={{username: 'holstein', id: 70}} /> */}
     </Container>
   );
 };
