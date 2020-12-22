@@ -44,6 +44,8 @@ const ProfileList = ({navigation, profiles, setProfiles}: Props) => {
       email: '',
       phoneNumber: '',
       description: '',
+      dateOfBirth: new Date(),
+      countryOfOrigin: 'Austria',
     });
   };
 

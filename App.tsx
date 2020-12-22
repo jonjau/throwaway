@@ -15,6 +15,7 @@ import {
   ScrollView,
   View,
   StatusBar,
+  Route,
 } from 'react-native';
 import {
   Root,
@@ -71,9 +72,25 @@ const App = () => {
     <HomeContext.Provider value={{profiles, setProfiles}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{title: 'Throwaway Account Manager'}}
+          />
           <Stack.Screen name="Details" component={DetailsScreen} />
-          <Stack.Screen name="ProfileEdit" component={ProfileEditScreen} />
+          <Stack.Screen
+            name="ProfileEdit"
+            component={ProfileEditScreen}
+            options={({route}) => {
+              if (route.params) {
+                const profile = (route.params as {profile: Profile}).profile;
+                return {
+                  title: `Editing profile ${profile.id}: ${profile.username}`,
+                };
+              }
+              return {title: 'Editing profile'};
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </HomeContext.Provider>

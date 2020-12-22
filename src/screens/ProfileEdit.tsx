@@ -11,10 +11,13 @@ import {
   Picker,
   Textarea,
 } from 'native-base';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {useEffect, useState} from 'react';
 import {StackParamList} from '../../App';
+import {COUNTRIES} from '../constants';
 import Profile from '../models/Profile';
 import ProfileService from '../services/ProfileService';
+import {Platform} from 'react-native';
 
 type Props = {
   route: RouteProp<StackParamList, 'ProfileEdit'>;
@@ -24,9 +27,16 @@ type Props = {
 const ProfileEditScreen = ({route, navigation}: Props) => {
   const {profile: initialProfile} = route.params;
   const [profile, setProfile] = useState(initialProfile);
+  const [date, setDate] = useState(new Date(initialProfile.dateOfBirth));
+  const [show, setShow] = useState(false);
+
   useEffect(() => {
     updateProfile(profile);
   }, [profile]);
+
+  const showDateTimePicker = () => {
+    setShow(true);
+  };
 
   const updateProfile = (updatedProfile: Profile) => {
     return ProfileService.addProfile(updatedProfile);
@@ -84,14 +94,44 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
             <Picker.Item label="Female" value="Female" />
           </Picker>
         </Item>
+        <Item>
+          <Label>Country of Origin</Label>
+          <Picker
+            selectedValue={profile.countryOfOrigin}
+            onValueChange={(countryOfOrigin) => {
+              setProfile({...profile, countryOfOrigin});
+            }}>
+            {COUNTRIES.map((c) => (
+              <Picker.Item key={c} label={c} value={c} />
+            ))}
+          </Picker>
+        </Item>
+        <Item fixedLabel onPress={() => showDateTimePicker()}>
+          <Label>Date of birth</Label>
+          <Input disabled>{date.toDateString()}</Input>
+        </Item>
+        {show && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            locale="en"
+            display="default"
+            onChange={(_, dateOfBirth) => {
+              const currentDate = dateOfBirth || date;
+              setShow(Platform.OS === 'ios');
+              setDate(currentDate);
+              setProfile({...profile, dateOfBirth: currentDate});
+            }}
+          />
+        )}
+        <Textarea
+          rowSpan={6}
+          bordered
+          onChangeText={(description) => setProfile({...profile, description})}
+          defaultValue={profile.description}
+          placeholder="Description"
+        />
       </Form>
-      <Textarea
-        rowSpan={6}
-        bordered
-        onChangeText={(description) => setProfile({...profile, description})}
-        defaultValue={profile.description}
-        placeholder="Description"
-      />
     </View>
   );
 };
