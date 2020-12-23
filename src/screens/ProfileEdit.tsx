@@ -1,7 +1,6 @@
 import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {
-  View,
   Form,
   Input,
   Item,
@@ -18,6 +17,7 @@ import {COUNTRIES} from '../constants';
 import Profile from '../models/Profile';
 import ProfileService from '../services/ProfileService';
 import {Platform} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 
 type Props = {
   route: RouteProp<StackParamList, 'ProfileEdit'>;
@@ -46,19 +46,7 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
   };
 
   return (
-    <View>
-      <Button
-        onPress={() => {
-          deleteThisProfile().then(() => navigation.navigate('Home'));
-        }}>
-        <Text>Delete this</Text>
-      </Button>
-      <Button
-        onPress={() => {
-          console.log(profile);
-        }}>
-        <Text>Current</Text>
-      </Button>
+    <ScrollView>
       <Form>
         <Item fixedLabel>
           <Label>Username</Label>
@@ -84,6 +72,40 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
           />
         </Item>
         <Item fixedLabel>
+          <Label>Full name</Label>
+          <Input
+            defaultValue={profile.fullName}
+            onChangeText={(fullName) => setProfile({...profile, fullName})}
+          />
+        </Item>
+        <Item fixedLabel>
+          <Label>Address line 1</Label>
+          <Input
+            defaultValue={profile.addressLine1}
+            onChangeText={(addressLine1) =>
+              setProfile({...profile, addressLine1})
+            }
+          />
+        </Item>
+        <Item fixedLabel>
+          <Label>Address line 2</Label>
+          <Input
+            defaultValue={profile.addressLine2}
+            onChangeText={(addressLine2) =>
+              setProfile({...profile, addressLine2})
+            }
+          />
+        </Item>
+        <Item fixedLabel>
+          <Label>Address line 3</Label>
+          <Input
+            defaultValue={profile.addressLine3}
+            onChangeText={(addressLine3) =>
+              setProfile({...profile, addressLine3})
+            }
+          />
+        </Item>
+        <Item fixedLabel>
           <Label>Sex</Label>
           <Picker
             selectedValue={profile.sex}
@@ -95,7 +117,7 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
           </Picker>
         </Item>
         <Item>
-          <Label>Country of Origin</Label>
+          <Label>Country of origin</Label>
           <Picker
             selectedValue={profile.countryOfOrigin}
             onValueChange={(countryOfOrigin) => {
@@ -113,6 +135,7 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
         {show && (
           <DateTimePicker
             value={date}
+            maximumDate={new Date()}
             mode="date"
             locale="en"
             display="default"
@@ -126,13 +149,19 @@ const ProfileEditScreen = ({route, navigation}: Props) => {
         )}
         <Textarea
           rowSpan={6}
-          bordered
           onChangeText={(description) => setProfile({...profile, description})}
           defaultValue={profile.description}
           placeholder="Description"
         />
       </Form>
-    </View>
+      <Button
+        block
+        onPress={() => {
+          deleteThisProfile().then(() => navigation.navigate('Home'));
+        }}>
+        <Text>Delete this profile</Text>
+      </Button>
+    </ScrollView>
   );
 };
 

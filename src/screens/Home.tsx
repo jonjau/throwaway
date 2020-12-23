@@ -1,9 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {Button, Container, Text} from 'native-base';
+import {Button, Container, Footer, FooterTab, Text} from 'native-base';
 import {StackParamList, HomeContext, HomeContextType} from '../../App';
 import ProfileList from './ProfileList';
 import ProfileService from '../services/ProfileService';
+import Profile from '../models/Profile';
 
 export type HomeScreenNavigationProp = StackNavigationProp<
   StackParamList,
@@ -12,6 +13,21 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 type Props = {
   navigation: HomeScreenNavigationProp;
 };
+
+const defaultProfile = (id: number): Profile => ({
+  id,
+  fullName: 'John Doe',
+  username: 'jdoe',
+  sex: 'Male',
+  email: 'jdoe@gmail.com',
+  addressLine1: '',
+  addressLine2: '',
+  addressLine3: '',
+  phoneNumber: '',
+  description: '',
+  dateOfBirth: new Date(2000, 0, 1),
+  countryOfOrigin: 'Austria',
+});
 
 const HomeScreen = ({navigation}: Props) => {
   const context = useContext(HomeContext) as HomeContextType;
@@ -24,21 +40,28 @@ const HomeScreen = ({navigation}: Props) => {
     };
     fetchProfiles();
   });
+
+  const addProfile = () => {
+    const lastProfile = profiles[profiles.length - 1];
+    const lastProfileId = lastProfile ? lastProfile.id : 0;
+    ProfileService.addProfile(defaultProfile(lastProfileId + 1));
+  };
+
   return (
     <Container>
-      {/* <Text>Home Screen</Text>
-      <Button onPress={() => navigation.navigate('Details')}>
-        <Text>Go to Details</Text>
-      </Button>
-      <Button
-        onPress={() => navigation.navigate('ProfileEdit', {profile: hodl})}>
-        <Text>Go to ProfileEdit</Text>
-      </Button> */}
-      <ProfileList
-        profiles={profiles}
-        setProfiles={setProfiles}
-        navigation={navigation}
-      />
+      <ProfileList profiles={profiles} navigation={navigation} />
+      <Footer>
+        <FooterTab>
+          <Button onPress={() => navigation.navigate('About')}>
+            <Text>About</Text>
+          </Button>
+        </FooterTab>
+        <FooterTab>
+          <Button onPress={addProfile}>
+            <Text>Add profile</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
     </Container>
   );
 };
