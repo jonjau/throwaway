@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Button, Container, Footer, FooterTab, Text} from 'native-base';
-import {StackParamList, HomeContext, HomeContextType} from '../../App';
+import {StackParamList, HomeContext, HomeContextType} from '../App';
 import ProfileList from '../components/ProfileList';
 import ProfileService from '../services/ProfileService';
 import Profile from '../models/Profile';

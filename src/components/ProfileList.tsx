@@ -83,7 +83,7 @@ const ProfileList = ({navigation, profiles}: ProfileListProps) => {
 
 const styles = StyleSheet.create({
   largeFont: {
-    fontSize: 20,
+    fontSize: 18,
   },
 });
 

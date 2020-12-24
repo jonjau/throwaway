@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 
-import HomeScreen from './src/screens/Home';
-import Profile from './src/models/Profile';
-import ProfileEditScreen from './src/screens/ProfileEdit';
-import AboutScreen from './src/screens/About';
+import HomeScreen from './screens/Home';
+import Profile from './models/Profile';
+import ProfileEditScreen from './screens/ProfileEdit';
+import AboutScreen from './screens/About';
 
 const Stack = createStackNavigator();
 export type StackParamList = {

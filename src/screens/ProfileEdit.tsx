@@ -12,7 +12,7 @@ import {
   Container,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
-import {StackParamList} from '../../App';
+import {StackParamList} from '../App';
 import {COUNTRIES} from '../constants';
 import Profile from '../models/Profile';
 import ProfileService from '../services/ProfileService';
