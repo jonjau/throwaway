@@ -7,5 +7,4 @@ storage.
 
 In other words, yet another CRUD app.
 
-![home screen](doc/home.png)
-![edit screen](doc/edit.png)
+![home and edit screens](doc/demo.png)
