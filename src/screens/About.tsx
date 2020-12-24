@@ -16,7 +16,7 @@ const AboutScreen = () => {
                 Add, edit and delete throwaway and their details. This
                 application operates offline. All the account information is
                 stored locally,
-                <Text style={styles.highlight}> unencrypted</Text>
+                <Text style={styles.highlight}> unencrypted.</Text>
               </Text>
             </Body>
           </CardItem>

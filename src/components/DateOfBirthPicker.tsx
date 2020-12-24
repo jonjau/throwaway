@@ -1,39 +1,45 @@
 import React, {useState} from 'react';
-import {View, Button, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Profile from '../models/Profile';
+import {Input, Item, Label} from 'native-base';
 
-type DateSelectionType = Date | undefined;
+interface DateOfBirthPickerProps {
+  profile: Profile;
+  setProfile: React.Dispatch<React.SetStateAction<Profile>>;
+}
 
-export const DateOfBirthPicker = () => {
-  const [date, setDate] = useState<Date>(new Date(1598051730000));
+const DateOfBirthPicker = ({profile, setProfile}: DateOfBirthPickerProps) => {
+  const [date, setDate] = useState(new Date(profile.dateOfBirth));
   const [show, setShow] = useState(false);
-
-  const onChange = (event: Event, selectedDate: DateSelectionType) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-    console.log(currentDate);
-  };
 
   const showDatepicker = () => {
     setShow(true);
   };
 
   return (
-    <View>
-      <View>
-        <Button onPress={showDatepicker} title="Show date picker!" />
-      </View>
+    <>
+      <Item fixedLabel onPress={() => showDatepicker()}>
+        <Label>Date of birth</Label>
+        <Input disabled>{date.toDateString()}</Input>
+      </Item>
       {show && (
         <DateTimePicker
-          testID="dateTimePicker"
           value={date}
+          maximumDate={new Date()}
           mode="date"
-          is24Hour={true}
+          locale="en"
           display="default"
-          onChange={onChange}
+          onChange={(_, dateOfBirth) => {
+            const currentDate = dateOfBirth || date;
+            setShow(Platform.OS === 'ios');
+            setDate(currentDate);
+            setProfile({...profile, dateOfBirth: currentDate});
+          }}
         />
       )}
-    </View>
+    </>
   );
 };
+
+export default DateOfBirthPicker;

@@ -1,21 +1,21 @@
 import React from 'react';
-import {View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Text, ListItem, Right, Body} from 'native-base';
 import Profile from '../models/Profile';
-import {HomeScreenNavigationProp} from './Home';
+import {HomeScreenNavigationProp} from '../screens/Home';
 import {ScrollView} from 'react-native-gesture-handler';
-
-interface ProfileItemProps {
-  navigation: HomeScreenNavigationProp;
-  profile: Profile;
-}
 
 const stringTruncated = (str: string, maxLen: number) => {
   const dots = str.length > maxLen ? '...' : '';
   return str.substring(0, maxLen) + dots;
 };
 
-const ProfileItem = ({navigation, profile}: ProfileItemProps) => {
+interface ProfileListItemProps {
+  navigation: HomeScreenNavigationProp;
+  profile: Profile;
+}
+
+const ProfileListItem = ({navigation, profile}: ProfileListItemProps) => {
   const {
     fullName,
     description,
@@ -32,7 +32,7 @@ const ProfileItem = ({navigation, profile}: ProfileItemProps) => {
     <View>
       <ListItem onPress={() => navigation.navigate('ProfileEdit', {profile})}>
         <Body>
-          <Text style={{fontSize: 20}}>
+          <Text style={styles.largeFont}>
             {fullName}
             <Text note>{`  ${sex}, ${getAge(
               dateOfBirth,
@@ -57,10 +57,20 @@ const ProfileList = ({navigation, profiles}: Props) => {
   return (
     <ScrollView>
       {profiles.map((profile, index) => (
-        <ProfileItem profile={profile} key={index} navigation={navigation} />
+        <ProfileListItem
+          profile={profile}
+          key={index}
+          navigation={navigation}
+        />
       ))}
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  largeFont: {
+    fontSize: 20,
+  },
+});
 
 export default ProfileList;
