@@ -1,3 +1,6 @@
+/**
+ * Basic model for storing account details.
+ */
 export default interface Profile {
   id: number;
   username: string;

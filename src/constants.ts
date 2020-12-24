@@ -1,3 +1,6 @@
+/**
+ * List of the world's countries.
+ */
 export const COUNTRIES = [
   'Afghanistan',
   'Albania',

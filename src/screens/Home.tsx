@@ -6,14 +6,11 @@ import ProfileList from '../components/ProfileList';
 import ProfileService from '../services/ProfileService';
 import Profile from '../models/Profile';
 
-export type HomeScreenNavigationProp = StackNavigationProp<
-  StackParamList,
-  'Home'
->;
-type Props = {
-  navigation: HomeScreenNavigationProp;
-};
-
+/**
+ * Returns a `Profile` with some default details.
+ *
+ * @param id the ID of the profile to be generated
+ */
 const defaultProfile = (id: number): Profile => ({
   id,
   fullName: 'John Doe',
@@ -29,10 +26,21 @@ const defaultProfile = (id: number): Profile => ({
   countryOfOrigin: 'Austria',
 });
 
-const HomeScreen = ({navigation}: Props) => {
+export type HomeScreenNavigationProp = StackNavigationProp<
+  StackParamList,
+  'Home'
+>;
+type HomeScreenProps = {
+  navigation: HomeScreenNavigationProp;
+};
+
+const HomeScreen = ({navigation}: HomeScreenProps) => {
+  // "React context is a poor man's Redux"
   const context = useContext(HomeContext) as HomeContextType;
   const {profiles, setProfiles} = context;
 
+  // every time this component is re-rendered (i.e. when some state changes),
+  // it will refresh the profiles (async'ly) by getting it from the service.
   useEffect(() => {
     const fetchProfiles = async () => {
       const data = await ProfileService.getAllProfiles();
@@ -41,6 +49,7 @@ const HomeScreen = ({navigation}: Props) => {
     fetchProfiles();
   });
 
+  // add a profile with default details and a new distinct (hopefully) ID
   const addProfile = () => {
     const lastProfile = profiles[profiles.length - 1];
     const lastProfileId = lastProfile ? lastProfile.id : 0;

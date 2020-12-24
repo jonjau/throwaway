@@ -10,6 +10,8 @@ interface DateOfBirthPickerProps {
 }
 
 const DateOfBirthPicker = ({profile, setProfile}: DateOfBirthPickerProps) => {
+  // DateOfBirthPicker's date gets initialized from the profile passed as a
+  // prop, but manages its own date state from then on.
   const [date, setDate] = useState(new Date(profile.dateOfBirth));
   const [show, setShow] = useState(false);
 
@@ -30,11 +32,14 @@ const DateOfBirthPicker = ({profile, setProfile}: DateOfBirthPickerProps) => {
           mode="date"
           locale="en"
           display="default"
-          onChange={(_, dateOfBirth) => {
-            const currentDate = dateOfBirth || date;
+          onChange={(_, selectedDate) => {
+            const dateOfBirth = selectedDate || date;
             setShow(Platform.OS === 'ios');
-            setDate(currentDate);
-            setProfile({...profile, dateOfBirth: currentDate});
+            // setDate seems redundant when we're also calling
+            // setProfile each time, but letting the DateTimePicker's
+            // value prop be profile.dateOfBirth led to errors...
+            setDate(dateOfBirth);
+            setProfile({...profile, dateOfBirth});
           }}
         />
       )}

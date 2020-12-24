@@ -1,13 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,8 +6,6 @@ import HomeScreen from './src/screens/Home';
 import Profile from './src/models/Profile';
 import ProfileEditScreen from './src/screens/ProfileEdit';
 import AboutScreen from './src/screens/About';
-
-declare const global: {HermesInternal: null | {}};
 
 const Stack = createStackNavigator();
 export type StackParamList = {
@@ -35,8 +23,10 @@ export interface HomeContextType {
 export const HomeContext = React.createContext<HomeContextType | null>(null);
 
 const App = () => {
+  // Global state stored here.
   const [profiles, setProfiles] = useState<Profile[]>([]);
   return (
+    // Global state implicitly "passed down" to all components via context
     <HomeContext.Provider value={{profiles, setProfiles}}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">

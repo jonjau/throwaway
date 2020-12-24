@@ -17,16 +17,21 @@ import {COUNTRIES} from '../constants';
 import Profile from '../models/Profile';
 import ProfileService from '../services/ProfileService';
 import {ScrollView} from 'react-native-gesture-handler';
+import DateOfBirthPicker from '../components/DateOfBirthPicker';
 
-type Props = {
+type ProfileEditScreenProps = {
   route: RouteProp<StackParamList, 'ProfileEdit'>;
   navigation: StackNavigationProp<StackParamList, 'ProfileEdit'>;
 };
 
-const ProfileEditScreen = ({route, navigation}: Props) => {
+const ProfileEditScreen = ({route, navigation}: ProfileEditScreenProps) => {
+  // state initalised from params, but managed locally thereafter
   const {profile: initialProfile} = route.params;
   const [profile, setProfile] = useState(initialProfile);
 
+  // synchronize storage to local state every time the local state changes.
+  // This basically happens every keypress, but this does not seem to affect
+  // input lag (on the emulator), the lag is bad regardless.
   useEffect(() => {
     updateProfile(profile);
   }, [profile]);
